@@ -1,4 +1,46 @@
+type Query {
+  posts: [Post!]!
+}
+
 type User {
   id: ID!
-  name: String!
+  username: String!
+  email: String!
+  password: String!
+  posts: [Post!]!
+  createdAt: String
+  updatedAt: String
+}
+
+type Post {
+  id: ID!
+  body: String!
+  author: User!
+  comments: [Comment!]!
+  likes: [Like!]!
+  createdAt: String
+  updatedAt: String
+}
+
+type Comment {
+  id: ID!
+  body: String!
+  post: Post!
+  createdAt: String
+  updatedAt: String
+}
+
+type Like {
+  id: ID!
+  type: String!
+  post: Post!
+  createdAt: String
+  updatedAt: String
+}
+
+enum LikeType {
+  LIKE
+  DISLIKE
+  SMILE
+  ANGRY
 }
