@@ -9,3 +9,9 @@ export interface AuthPayload {
   token: string;
   user: User;
 }
+
+export interface SuccessAction {
+  action: string;
+  success: boolean;
+  message: string;
+}
