@@ -1,5 +1,6 @@
 import { Resolvers } from '../generated/graphqlgen';
 import { Query } from './Query';
+import { Subscription } from './Subscription';
 import QueryResolversType from './Type';
 import { auth } from './Mutation/auth';
 import { post } from './Mutation/post';
@@ -14,6 +15,7 @@ export const resolvers: Resolvers = {
     ...auth,
     ...post,
   },
+  Subscription,
   User,
   Post,
   Comment,

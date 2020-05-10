@@ -14,4 +14,30 @@ export const Post: PostResolvers.Type = {
   likes: ({ id }, args, ctx) => {
     return ctx.prisma.post({ id }).likes();
   },
+
+  likeCount: ({ id }, args, ctx) => {
+    return ctx.prisma
+      .likesConnection({
+        where: {
+          post: {
+            id,
+          },
+        },
+      })
+      .aggregate()
+      .count();
+  },
+
+  commentCount: ({ id }, args, ctx) => {
+    return ctx.prisma
+      .commentsConnection({
+        where: {
+          post: {
+            id,
+          },
+        },
+      })
+      .aggregate()
+      .count();
+  },
 };

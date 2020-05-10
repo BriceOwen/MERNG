@@ -13,6 +13,11 @@ type Mutation {
   likePost(postId: ID!): Post!
 }
 
+# Subscription
+type Subscription {
+  postSubscription: Post!
+}
+
 # Inputs
 input RegisterInput {
   username: String!
@@ -50,6 +55,8 @@ type Post {
   author: User!
   comments: [Comment!]!
   likes: [Like!]!
+  likeCount: Int!
+  commentCount: Int!
   createdAt: String
   updatedAt: String
 }

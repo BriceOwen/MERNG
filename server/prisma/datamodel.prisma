@@ -16,6 +16,8 @@ type Post {
   author: User! @relation(link: INLINE)
   comments: [Comment!]!
   likes: [Like!]!
+  likeCount: Int! @default(value: 0)
+  commentCount: Int! @default(value: 0)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
