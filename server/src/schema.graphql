@@ -2,6 +2,24 @@ type Query {
   posts: [Post!]!
 }
 
+type Mutation {
+  register(registerInput: RegisterInput): AuthPayload!
+  login(username: String!, password: String!): AuthPayload!
+}
+
+# Inputs
+input RegisterInput {
+  username: String!
+  email: String!
+  password: String!
+}
+
+# Types
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
 type User {
   id: ID!
   username: String!
