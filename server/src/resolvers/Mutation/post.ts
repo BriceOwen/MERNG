@@ -137,23 +137,71 @@ const deleteComment: MutationResolvers.DeleteCommentResolver = async (
   return ctx.prisma.post({ id: postId });
 };
 
-// const likePost: MutationResolvers.LikePostResolver = async (
-//   parent,
-//   { postId },
-//   ctx
-// ) => {
-//   const userId = checkAuth(ctx);
+const likePost: MutationResolvers.LikePostResolver = async (
+  parent,
+  { postId },
+  ctx
+) => {
+  const userId = checkAuth(ctx);
 
-//   const post = await ctx.prisma.post({ id: postId });
+  const postExists = await ctx.prisma.$exists.post({ id: postId });
 
-//   if (!post) {
-//     throw new Error('Post not found');
-//   }
-// };
+  if (!postExists) {
+    throw new Error('Post not found');
+  }
+
+  const like = await ctx.prisma
+    .post({
+      id: postId,
+    })
+    .likes({ where: { author: { id: userId } } });
+
+  if (like.length > 0) {
+    // Post already likes, unlike it
+    const unlike = await ctx.prisma.deleteLike({ id: like[0].id });
+
+    return ctx.prisma.post({ id: postId });
+  } else {
+    // Not like, liked post
+    const like = await ctx.prisma.createLike({
+      post: { connect: { id: postId } },
+      author: { connect: { id: userId } },
+    });
+
+    await ctx.prisma.updateUser({
+      data: {
+        likes: {
+          connect: {
+            id: like.id,
+          },
+        },
+      },
+      where: {
+        id: userId,
+      },
+    });
+
+    const post = await ctx.prisma.updatePost({
+      data: {
+        likes: {
+          connect: {
+            id: like.id,
+          },
+        },
+      },
+      where: {
+        id: postId,
+      },
+    });
+
+    return post;
+  }
+};
 
 export const post = {
   createPost,
   deletePost,
   createComment,
   deleteComment,
+  likePost,
 };

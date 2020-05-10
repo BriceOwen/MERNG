@@ -10,4 +10,8 @@ export const User: UserResolvers.Type = {
   comments: ({ id }, args, ctx) => {
     return ctx.prisma.user({ id }).comments();
   },
+
+  likes: ({ id }, args, ctx) => {
+    return ctx.prisma.user({ id }).likes();
+  },
 };

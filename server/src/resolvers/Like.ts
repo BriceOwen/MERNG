@@ -6,4 +6,8 @@ export const Like: LikeResolvers.Type = {
   post: ({ id }, args, ctx) => {
     return ctx.prisma.like({ id }).post();
   },
+
+  author: ({ id }, args, ctx) => {
+    return ctx.prisma.like({ id }).author();
+  },
 };
