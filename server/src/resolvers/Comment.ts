@@ -6,4 +6,8 @@ export const Comment: CommentResolvers.Type = {
   post: ({ id }, args, ctx) => {
     return ctx.prisma.comment({ id }).post();
   },
+
+  author: ({ id }, args, ctx) => {
+    return ctx.prisma.comment({ id }).author();
+  },
 };
