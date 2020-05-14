@@ -8,8 +8,9 @@ import { User } from './User';
 import { Post } from './Post';
 import { Comment } from './Comment';
 import { Like } from './Like';
+import { IResolvers } from 'graphql-tools/Interfaces';
 
-export const resolvers: Resolvers = {
+export const resolvers = ({
   Query,
   Mutation: {
     ...auth,
@@ -21,4 +22,4 @@ export const resolvers: Resolvers = {
   Comment,
   Like,
   ...QueryResolversType,
-};
+} as unknown) as IResolvers;
