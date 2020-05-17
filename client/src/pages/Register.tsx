@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { Form, Button } from 'semantic-ui-react';
+import { AuthContext } from '../context/auth';
 import { REGISTER_USER } from '../graphql/auth/mutation';
+import { getIsLoggedIn } from '../util/authentication';
 
 interface userInterface {
   username: string;
@@ -16,6 +18,7 @@ interface userInterface {
 // }
 
 function Register(props: any) {
+  const context = useContext(AuthContext);
   // const [errors, setErrors] = useState();
   const [values, setValues] = useState<userInterface>({
     username: '',
@@ -24,8 +27,9 @@ function Register(props: any) {
   });
 
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
-    update(_, result) {
-      console.log(result);
+    update(_, { data: { register: userData } }) {
+      console.log(userData);
+      context.login(userData);
       props.history.push('/');
     },
     onError(err) {
@@ -37,6 +41,13 @@ function Register(props: any) {
     },
     variables: values,
   });
+
+  useEffect(() => {
+    console.log('getIsLoggedIn', getIsLoggedIn);
+    if (getIsLoggedIn()) {
+      props.history.push('/');
+    }
+  }, [getIsLoggedIn()]);
 
   const onChange = (event: any) => {
     setValues({ ...values, [event.target.name]: event.target.value });
