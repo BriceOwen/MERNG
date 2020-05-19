@@ -39,3 +39,10 @@ export interface DecodedTokenInterface {
   userId: string;
   username: string;
 }
+
+export interface EventInterface {
+  target: {
+    name: string;
+    value: string;
+  };
+}
